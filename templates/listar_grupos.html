@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Grupos{% endblock %}
+
+{% block content %}
+  <h1>Grupos</h1>
+  <p class="page-subtitle">Listado de grupos de catequesis.</p>
+
+  <div class="card">
+    <div class="toolbar">
+      <a class="btn btn-primary" href="{{ url_for('nuevo_grupo') }}">
+        <i class="fa-solid fa-plus"></i> Nuevo grupo
+      </a>
+
+      <a class="btn btn-ghost" href="{{ url_for('index') }}">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+    </div>
+
+    <div class="search">
+      <input data-table-search type="text" placeholder="Buscar grupo por nombre, día, horario...">
+      <span class="pill"><i class="fa-solid fa-magnifying-glass"></i> Buscar</span>
+    </div>
+
+    <div class="table-wrap">
+      <table data-table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Día</th>
+            <th>Horario</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for g in grupos %}
+          <tr>
+            <td>{{ g.get('nombre_grupo') or g.get('nombreGrupo') or 'N/A' }}</td>
+            <td>{{ g.get('dia_reunion') or g.get('diaReunion') or 'N/A' }}</td>
+            <td>{{ g.get('horario') or 'N/A' }}</td>
+
+            <td>
+              {% if (g.get('estado') == 'Activo') %}
+                <span class="pill" style="border-color: rgba(16,185,129,.35); background: rgba(16,185,129,.10);">
+                  <i class="fa-solid fa-circle-check"></i> Activo
+                </span>
+              {% else %}
+                <span class="pill" style="border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.10);">
+                  <i class="fa-solid fa-circle-xmark"></i> Inactivo
+                </span>
+              {% endif %}
+            </td>
+
+            <td>
+              <div class="actions">
+                <a class="btn btn-ghost btn-sm" href="{{ url_for('editar_grupo', grupo_id=g._id|string) }}">
+                  <i class="fa-solid fa-pen"></i> Editar
+                </a>
+
+                <form method="POST"
+                      action="{{ url_for('eliminar_grupo', grupo_id=g._id|string) }}"
+                      onsubmit="return confirm('¿Eliminar este grupo?');"
+                      style="margin:0;">
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+          {% if grupos|length == 0 %}
+          <tr>
+            <td colspan="5" style="padding:16px; color:var(--muted);">
+              No hay grupos registrados.
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

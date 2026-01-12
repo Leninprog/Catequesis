@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Sistema de Catequesis{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <!-- Font Awesome (iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <div class="brand-badge"><i class="fa-solid fa-church"></i></div>
+                <div class="brand-title">
+                    <small>Sistema</small>
+                    <strong>Catequesis MongoDB</strong>
+                </div>
+            </div>
+
+            <nav class="nav-links">
+                <a href="{{ url_for('index') }}"><i class="fa-solid fa-house"></i> Inicio</a>
+                <a href="{{ url_for('listar_estudiantes') }}"><i class="fa-solid fa-users"></i> Estudiantes</a>
+                <a href="{{ url_for('listar_grupos') }}"><i class="fa-solid fa-layer-group"></i> Grupos</a>
+                <a href="{{ url_for('listar_inscripciones') }}"><i class="fa-solid fa-clipboard-list"></i>
+                    Inscripciones</a>
+                <a href="{{ url_for('listar_asistencias') }}"><i class="fa-solid fa-calendar-check"></i> Asistencias</a>
+                <a href="{{ url_for('listar_eventos') }}"><i class="fa-solid fa-calendar-days"></i> Eventos</a>
+                <a href="{{ url_for('ping') }}"><i class="fa-solid fa-signal"></i> Ping</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- JS (si ya lo tienes) -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

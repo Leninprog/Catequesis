@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Nuevo Grupo{% endblock %}
+
+{% block content %}
+  <h1>Nuevo Grupo</h1>
+  <p class="page-subtitle">Crea un nuevo grupo de catequesis.</p>
+
+  <form method="POST" class="card">
+    <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap: 14px;">
+      <div style="grid-column: span 6;">
+        <label><i class="fa-solid fa-layer-group"></i> Nombre del grupo</label>
+        <input type="text" name="nombre_grupo" required>
+      </div>
+
+      <div style="grid-column: span 3;">
+        <label><i class="fa-solid fa-calendar-day"></i> Día de reunión</label>
+        <input type="text" name="dia_reunion" required placeholder="Ej: Sábado">
+      </div>
+
+      <div style="grid-column: span 3;">
+        <label><i class="fa-solid fa-clock"></i> Horario</label>
+        <input type="text" name="horario" required placeholder="Ej: 10:00 AM">
+      </div>
+
+      <div style="grid-column: span 4;">
+        <label><i class="fa-solid fa-toggle-on"></i> Estado</label>
+        <select name="estado" required>
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="toolbar" style="margin-top:16px;">
+      <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar
+      </button>
+
+      <a class="btn btn-ghost" href="{{ url_for('listar_grupos') }}">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+    </div>
+  </form>
+{% endblock %}

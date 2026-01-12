@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Asistencias{% endblock %}
+
+{% block content %}
+  <h1>Asistencias</h1>
+  <p class="page-subtitle">Registro de sesiones y estados de asistencia.</p>
+
+  <div class="card">
+    <div class="toolbar">
+      <a class="btn btn-ghost" href="{{ url_for('index') }}">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+
+      <a class="btn btn-ghost" href="{{ url_for('listar_inscripciones') }}">
+        <i class="fa-solid fa-clipboard-list"></i> Ver inscripciones
+      </a>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Estudiante</th>
+            <th>Grupo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for a in asistencias %}
+          <tr>
+            <td>{{ a.fecha_sesion_txt }}</td>
+            <td>{{ a.estudiante_nombre }}</td>
+            <td>{{ a.grupo_nombre }}</td>
+
+            <td>
+              {% set st = (a.estado or '') %}
+              {% if st == 'Presente' %}
+                <span class="pill" style="border-color: rgba(16,185,129,.35); background: rgba(16,185,129,.10);">
+                  <i class="fa-solid fa-circle-check"></i> Presente
+                </span>
+              {% elif st == 'Ausente' %}
+                <span class="pill" style="border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.10);">
+                  <i class="fa-solid fa-circle-xmark"></i> Ausente
+                </span>
+              {% elif st == 'Tarde' %}
+                <span class="pill" style="border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.12);">
+                  <i class="fa-solid fa-clock"></i> Tarde
+                </span>
+              {% else %}
+                <span class="pill"><i class="fa-solid fa-circle-info"></i> {{ a.estado }}</span>
+              {% endif %}
+            </td>
+
+            <td>
+              <div class="actions">
+                <a class="btn btn-ghost btn-sm" href="{{ url_for('editar_asistencia', asistencia_id=a._id|string) }}">
+                  <i class="fa-solid fa-pen"></i> Editar
+                </a>
+
+                <form method="POST"
+                      action="{{ url_for('eliminar_asistencia', asistencia_id=a._id|string) }}"
+                      onsubmit="return confirm('¿Eliminar esta asistencia?');"
+                      style="margin:0;">
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+          {% if asistencias|length == 0 %}
+          <tr>
+            <td colspan="5" style="padding:16px; color:var(--muted);">
+              No hay asistencias registradas.
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

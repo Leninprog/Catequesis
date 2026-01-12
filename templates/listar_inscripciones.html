@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Inscripciones{% endblock %}
+
+{% block content %}
+  <h1>Inscripciones</h1>
+  <p class="page-subtitle">Listado de inscripciones registradas.</p>
+
+  <div class="card">
+    <div class="toolbar">
+      <a class="btn btn-ghost" href="{{ url_for('index') }}">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+      <div class="pill"><i class="fa-solid fa-clipboard-list"></i> {{ inscripciones|length }} registros</div>
+    </div>
+
+    <div class="search">
+      <input data-table-search type="text" placeholder="Buscar por estudiante, grupo, estado...">
+      <span class="pill"><i class="fa-solid fa-magnifying-glass"></i> Buscar</span>
+    </div>
+
+    <div class="table-wrap">
+      <table data-table>
+        <thead>
+          <tr>
+            <th>Estudiante</th>
+            <th>Grupo</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for i in inscripciones %}
+          <tr>
+            <td>{{ i.get('estudiante', {}).get('nombre', 'N/A') }}</td>
+            <td>{{ i.get('grupo', {}).get('nombre_grupo', 'N/A') }}</td>
+
+            <td>
+              {% if i.get('estado') == 'Activo' %}
+                <span class="pill" style="border-color: rgba(16,185,129,.35); background: rgba(16,185,129,.10);">
+                  <i class="fa-solid fa-circle-check"></i> Activo
+                </span>
+              {% else %}
+                <span class="pill" style="border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.10);">
+                  <i class="fa-solid fa-circle-xmark"></i> Inactivo
+                </span>
+              {% endif %}
+            </td>
+
+            <td>{{ i.get('fecha_inscripcion_txt') or i.get('fecha_inscripcion') }}</td>
+
+            <td>
+              <div class="actions">
+                <a class="btn btn-primary btn-sm" href="{{ url_for('nueva_asistencia', inscripcion_id=i._id|string) }}">
+                  <i class="fa-solid fa-calendar-plus"></i> Registrar asistencia
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+          {% if inscripciones|length == 0 %}
+          <tr>
+            <td colspan="5" style="padding:16px; color:var(--muted);">
+              No hay inscripciones registradas.
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

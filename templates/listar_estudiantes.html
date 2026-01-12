@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Estudiantes{% endblock %}
+
+{% block content %}
+  <h1>Estudiantes</h1>
+  <p class="page-subtitle">Listado de catequizados registrados en MongoDB.</p>
+
+  <div class="card">
+    <div class="toolbar">
+      <a class="btn btn-primary" href="{{ url_for('nuevo_estudiante') }}">
+        <i class="fa-solid fa-user-plus"></i> Registrar nuevo
+      </a>
+
+      <a class="btn btn-ghost" href="{{ url_for('index') }}">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+    </div>
+
+    <div class="search">
+      <input data-table-search type="text" placeholder="Buscar por cédula, nombres, apellidos, dirección...">
+      <span class="pill"><i class="fa-solid fa-magnifying-glass"></i> Buscar</span>
+    </div>
+
+    <div class="table-wrap">
+      <table data-table>
+        <thead>
+          <tr>
+            <th>Cédula</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Dirección</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for e in estudiantes %}
+          <tr>
+            <td>{{ e.cedula }}</td>
+            <td>{{ e.nombres }}</td>
+            <td>{{ e.apellidos }}</td>
+            <td>{{ e.direccion }}</td>
+
+            <td>
+              <div class="actions">
+                <a class="btn btn-ghost btn-sm" href="{{ url_for('detalle_estudiante', estudiante_id=e._id|string) }}">
+                  <i class="fa-solid fa-eye"></i> Ver
+                </a>
+
+                <a class="btn btn-ghost btn-sm" href="{{ url_for('editar_estudiante', estudiante_id=e._id|string) }}">
+                  <i class="fa-solid fa-pen"></i> Editar
+                </a>
+
+                <a class="btn btn-primary btn-sm" href="{{ url_for('inscribir_estudiante', estudiante_id=e._id|string) }}">
+                  <i class="fa-solid fa-clipboard-check"></i> Inscribir
+                </a>
+
+                <form method="POST"
+                      action="{{ url_for('eliminar_estudiante', estudiante_id=e._id|string) }}"
+                      onsubmit="return confirm('¿Seguro que deseas eliminar este estudiante?');"
+                      style="margin:0;">
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+          {% if estudiantes|length == 0 %}
+          <tr>
+            <td colspan="5" style="color:var(--muted); padding:16px;">
+              No hay estudiantes registrados.
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

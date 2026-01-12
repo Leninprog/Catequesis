@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Detalle Estudiante{% endblock %}
+
+{% block content %}
+  <h1>Detalle del Estudiante</h1>
+  <p class="page-subtitle">Información completa del catequizado y su representante.</p>
+
+  <div class="card">
+    <div class="toolbar">
+      <a class="btn btn-ghost" href="{{ url_for('listar_estudiantes') }}">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn btn-ghost" href="{{ url_for('editar_estudiante', estudiante_id=e._id|string) }}">
+          <i class="fa-solid fa-pen"></i> Editar
+        </a>
+        <a class="btn btn-primary" href="{{ url_for('inscribir_estudiante', estudiante_id=e._id|string) }}">
+          <i class="fa-solid fa-clipboard-check"></i> Inscribir
+        </a>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="min-width:unset;">
+      <table style="min-width:unset;">
+        <thead>
+          <tr>
+            <th colspan="2"><i class="fa-solid fa-id-card"></i> Datos del estudiante</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width:220px; color:var(--muted); font-weight:900;">Cédula</td>
+            <td>{{ e.cedula }}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted); font-weight:900;">Nombres</td>
+            <td>{{ e.nombres }}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted); font-weight:900;">Apellidos</td>
+            <td>{{ e.apellidos }}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted); font-weight:900;">Dirección</td>
+            <td>{{ e.direccion }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="height:12px;"></div>
+
+    <div class="table-wrap" style="min-width:unset;">
+      <table style="min-width:unset;">
+        <thead>
+          <tr>
+            <th colspan="2"><i class="fa-solid fa-user-shield"></i> Representante</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width:220px; color:var(--muted); font-weight:900;">Nombre</td>
+            <td>{{ e.get('representante', {}).get('nombre', 'N/A') }}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted); font-weight:900;">Teléfono</td>
+            <td>{{ e.get('representante', {}).get('telefono', 'N/A') }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

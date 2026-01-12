@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+  <h1>Dashboard</h1>
+  <p class="page-subtitle">
+    Vista general del sistema: accesos rápidos, conteos y próximos eventos.
+  </p>
+
+  <div class="grid">
+    <!-- KPI: Estudiantes -->
+    <div class="card kpi">
+      <div class="kpi-top">
+        <div>
+          <p class="kpi-title">Estudiantes</p>
+          <p class="kpi-value">{{ stats.estudiantes }}</p>
+        </div>
+        <div class="kpi-icon" style="background:linear-gradient(135deg,#c10230,#ff3b6a);">
+          <i class="fa-solid fa-users"></i>
+        </div>
+      </div>
+
+      <div class="kpi-actions">
+        <a class="btn btn-primary btn-sm" href="{{ url_for('nuevo_estudiante') }}">
+          <i class="fa-solid fa-user-plus"></i> Registrar
+        </a>
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('listar_estudiantes') }}">
+          <i class="fa-solid fa-list"></i> Ver lista
+        </a>
+      </div>
+    </div>
+
+    <!-- KPI: Grupos -->
+    <div class="card kpi">
+      <div class="kpi-top">
+        <div>
+          <p class="kpi-title">Grupos</p>
+          <p class="kpi-value">{{ stats.grupos }}</p>
+        </div>
+        <div class="kpi-icon" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8);">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+      </div>
+
+      <div class="kpi-actions">
+        <a class="btn btn-primary btn-sm" href="{{ url_for('nuevo_grupo') }}">
+          <i class="fa-solid fa-plus"></i> Crear
+        </a>
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('listar_grupos') }}">
+          <i class="fa-solid fa-list"></i> Ver
+        </a>
+      </div>
+    </div>
+
+    <!-- KPI: Inscripciones -->
+    <div class="card kpi">
+      <div class="kpi-top">
+        <div>
+          <p class="kpi-title">Inscripciones</p>
+          <p class="kpi-value">{{ stats.inscripciones }}</p>
+        </div>
+        <div class="kpi-icon" style="background:linear-gradient(135deg,#10b981,#34d399);">
+          <i class="fa-solid fa-clipboard-list"></i>
+        </div>
+      </div>
+
+      <div class="kpi-actions">
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('listar_inscripciones') }}">
+          <i class="fa-solid fa-list"></i> Ver
+        </a>
+        <a class="btn btn-primary btn-sm" href="{{ url_for('listar_estudiantes') }}">
+          <i class="fa-solid fa-clipboard-check"></i> Inscribir
+        </a>
+      </div>
+    </div>
+
+    <!-- Panel grande: Próximos eventos -->
+    <div class="card panel">
+      <h2><i class="fa-solid fa-calendar-days"></i> Próximos eventos</h2>
+      <p class="page-subtitle" style="padding-bottom:10px;">
+        Actividades programadas por parroquia.
+      </p>
+
+      <div class="mini-list">
+        {% for ev in eventos %}
+        <div class="mini-item">
+          <div>
+            <strong>{{ ev.get('nombre_evento') or ev.get('nombreEvento') or 'Evento' }}</strong>
+            <small>
+              {{ ev.fecha_txt }} •
+              {{ (ev.get('parroquia', {}).get('nombreParroquia')) or (ev.get('parroquia', {}).get('nombre')) or 'N/A' }}
+            </small>
+          </div>
+          <a class="btn btn-ghost btn-sm" href="{{ url_for('listar_eventos') }}">
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        {% endfor %}
+
+        {% if eventos|length == 0 %}
+          <div class="mini-item">
+            <div>
+              <strong>No hay eventos registrados</strong>
+              <small>Agrega un evento para verlo aquí.</small>
+            </div>
+            <a class="btn btn-primary btn-sm" href="{{ url_for('nuevo_evento') }}">
+              <i class="fa-solid fa-calendar-plus"></i> Crear evento
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Panel pequeño: Asistencias -->
+    <div class="card panel-sm">
+      <h2><i class="fa-solid fa-calendar-check"></i> Asistencias</h2>
+      <p class="page-subtitle" style="padding-bottom:10px;">
+        Registros de sesiones y estados.
+      </p>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+        <div>
+          <div style="color:var(--muted); font-weight:900; font-size:13px;">Total</div>
+          <div style="font-size:34px; font-weight:900;">{{ stats.asistencias }}</div>
+        </div>
+        <div class="pill">
+          <i class="fa-solid fa-database"></i> MongoDB
+        </div>
+      </div>
+
+      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn btn-primary btn-sm" href="{{ url_for('listar_inscripciones') }}">
+          <i class="fa-solid fa-plus"></i> Registrar asistencia
+        </a>
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('listar_asistencias') }}">
+          <i class="fa-solid fa-list"></i> Ver asistencias
+        </a>
+      </div>
+    </div>
+
+    <!-- Panel pequeño: Eventos -->
+    <div class="card panel-sm">
+      <h2><i class="fa-solid fa-calendar"></i> Eventos</h2>
+      <p class="page-subtitle" style="padding-bottom:10px;">
+        Gestión de actividades parroquiales.
+      </p>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+        <div>
+          <div style="color:var(--muted); font-weight:900; font-size:13px;">Total</div>
+          <div style="font-size:34px; font-weight:900;">{{ stats.eventos }}</div>
+        </div>
+        <div class="pill">
+          <i class="fa-solid fa-bolt"></i> Acceso rápido
+        </div>
+      </div>
+
+      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn btn-primary btn-sm" href="{{ url_for('nuevo_evento') }}">
+          <i class="fa-solid fa-calendar-plus"></i> Nuevo evento
+        </a>
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('listar_eventos') }}">
+          <i class="fa-solid fa-list"></i> Ver eventos
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

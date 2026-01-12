@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Inscribir Estudiante{% endblock %}
+
+{% block content %}
+  <h1>Inscribir Estudiante</h1>
+  <p class="page-subtitle">Selecciona el grupo y registra la inscripción.</p>
+
+  <div class="card">
+    <div class="pill" style="margin-bottom:12px;">
+      <i class="fa-solid fa-user"></i>
+      {{ e.nombres }} {{ e.apellidos }} • {{ e.cedula }}
+    </div>
+
+    <form method="POST">
+      <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap: 14px;">
+        <div style="grid-column: span 8;">
+          <label><i class="fa-solid fa-layer-group"></i> Grupo</label>
+          <select name="grupo_id" required>
+            <option value="">-- Selecciona un grupo --</option>
+            {% for g in grupos %}
+              <option value="{{ g._id|string }}">
+                {{ g.nombre_grupo or g.nombreGrupo or 'Grupo' }} | {{ g.dia_reunion or g.diaReunion or '' }} | {{ g.horario or '' }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div style="grid-column: span 4;">
+          <label><i class="fa-solid fa-toggle-on"></i> Estado</label>
+          <select name="estado" required>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="toolbar" style="margin-top:16px;">
+        <button type="submit" class="btn btn-primary">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar inscripción
+        </button>
+
+        <a class="btn btn-ghost" href="{{ url_for('listar_estudiantes') }}">
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

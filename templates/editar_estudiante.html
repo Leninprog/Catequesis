@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Editar Estudiante{% endblock %}
+
+{% block content %}
+  <h1>Editar Estudiante</h1>
+  <p class="page-subtitle">Actualiza los datos del catequizado y su representante.</p>
+
+  <form method="POST" class="card">
+    <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap: 14px;">
+      <div style="grid-column: span 6;">
+        <label><i class="fa-solid fa-id-card"></i> Cédula</label>
+        <input type="text" name="cedula" required value="{{ e.cedula or '' }}">
+      </div>
+
+      <div style="grid-column: span 6;">
+        <label><i class="fa-solid fa-cake-candles"></i> Fecha de nacimiento</label>
+        <input type="date" name="fecha_nacimiento" required value="{{ fecha_nac }}">
+      </div>
+
+      <div style="grid-column: span 6;">
+        <label><i class="fa-solid fa-user"></i> Nombres</label>
+        <input type="text" name="nombres" required value="{{ e.nombres or '' }}">
+      </div>
+
+      <div style="grid-column: span 6;">
+        <label><i class="fa-solid fa-user"></i> Apellidos</label>
+        <input type="text" name="apellidos" required value="{{ e.apellidos or '' }}">
+      </div>
+
+      <div style="grid-column: span 12;">
+        <label><i class="fa-solid fa-location-dot"></i> Dirección</label>
+        <input type="text" name="direccion" required value="{{ e.direccion or '' }}">
+      </div>
+    </div>
+
+    <div style="margin-top:14px;">
+      <div class="pill"><i class="fa-solid fa-user-shield"></i> Representante</div>
+    </div>
+
+    <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap: 14px; margin-top:10px;">
+      <div style="grid-column: span 8;">
+        <label>Nombre</label>
+        <input type="text" name="rep_nombre" required value="{{ (e.representante.nombre if e.representante else '') }}">
+      </div>
+
+      <div style="grid-column: span 4;">
+        <label>Teléfono</label>
+        <input type="text" name="rep_telefono" required value="{{ (e.representante.telefono if e.representante else '') }}">
+      </div>
+    </div>
+
+    <div class="toolbar" style="margin-top:16px;">
+      <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
+      </button>
+
+      <a class="btn btn-ghost" href="{{ url_for('listar_estudiantes') }}">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+      </a>
+    </div>
+  </form>
+{% endblock %}

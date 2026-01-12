@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Registrar Asistencia{% endblock %}
+
+{% block content %}
+  <h1>Registrar Asistencia</h1>
+  <p class="page-subtitle">Registra el estado de asistencia para la inscripción seleccionada.</p>
+
+  <div class="card">
+    <div class="table-wrap" style="min-width:unset;">
+      <table style="min-width:unset;">
+        <thead>
+          <tr>
+            <th colspan="2"><i class="fa-solid fa-circle-info"></i> Información</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width:220px; color:var(--muted); font-weight:900;">Estudiante</td>
+            <td>{{ insc.get('estudiante', {}).get('nombre', 'N/A') }}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted); font-weight:900;">Grupo</td>
+            <td>{{ insc.get('grupo', {}).get('nombre_grupo', 'N/A') }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <form method="POST" style="margin-top:14px;">
+      <label><i class="fa-solid fa-clipboard-check"></i> Estado</label>
+      <select name="estado" required>
+        <option value="Presente">Presente</option>
+        <option value="Ausente">Ausente</option>
+        <option value="Tarde">Tarde</option>
+        <option value="Justificado">Justificado</option>
+      </select>
+
+      <div class="toolbar" style="margin-top:16px;">
+        <button type="submit" class="btn btn-primary">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar asistencia
+        </button>
+
+        <a class="btn btn-ghost" href="{{ url_for('listar_inscripciones') }}">
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

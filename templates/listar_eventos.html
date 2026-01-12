@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Eventos{% endblock %}
+
+{% block content %}
+  <h1>Eventos</h1>
+  <p class="page-subtitle">Calendario de eventos parroquiales.</p>
+
+  <div class="card">
+    <div style="display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
+      <a class="btn btn-primary" href="{{ url_for('nuevo_evento') }}">
+        <i class="fa-solid fa-calendar-plus"></i> Nuevo evento
+      </a>
+
+      <a class="btn btn-ghost" href="{{ url_for('index') }}">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Parroquia</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ev in eventos %}
+          <tr>
+            <td>{{ ev.get('nombre_evento') or ev.get('nombreEvento') or 'N/A' }}</td>
+            <td>{{ ev.get('fecha_evento') or ev.get('fechaEvento') or 'N/A' }}</td>
+            <td>{{ (ev.get('parroquia', {}).get('nombreParroquia')) or (ev.get('parroquia', {}).get('nombre')) or 'N/A' }}</td>
+
+            <td style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn btn-ghost" href="{{ url_for('editar_evento', evento_id=ev._id|string) }}">
+                <i class="fa-solid fa-pen"></i> Editar
+              </a>
+
+              <form method="POST" action="{{ url_for('eliminar_evento', evento_id=ev._id|string) }}"
+                    onsubmit="return confirm('¿Eliminar este evento?');" style="margin:0;">
+                <button type="submit" class="btn btn-danger">
+                  <i class="fa-solid fa-trash"></i> Eliminar
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+
+          {% if eventos|length == 0 %}
+          <tr>
+            <td colspan="4" style="color:var(--muted); padding:16px;">No hay eventos registrados.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

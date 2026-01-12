@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Nuevo Evento{% endblock %}
+
+{% block content %}
+  <h1>Nuevo Evento</h1>
+  <p class="page-subtitle">Registra un evento parroquial y su fecha.</p>
+
+  <form method="POST" class="card">
+    <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap: 14px;">
+      <div style="grid-column: span 8;">
+        <label><i class="fa-solid fa-calendar-day"></i> Nombre del evento</label>
+        <input type="text" name="nombre_evento" required>
+      </div>
+
+      <div style="grid-column: span 4;">
+        <label><i class="fa-solid fa-clock"></i> Fecha del evento</label>
+        <input type="date" name="fecha_evento" required>
+      </div>
+
+      <div style="grid-column: span 12;">
+        <label><i class="fa-solid fa-align-left"></i> Descripción</label>
+        <input type="text" name="descripcion" required>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;">
+      <div class="pill"><i class="fa-solid fa-church"></i> Parroquia</div>
+    </div>
+
+    <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap: 14px; margin-top:10px;">
+      <div style="grid-column: span 4;">
+        <label>ID Parroquia</label>
+        <input type="number" name="parroquia_id" value="1" required>
+      </div>
+
+      <div style="grid-column: span 8;">
+        <label>Nombre Parroquia</label>
+        <input type="text" name="parroquia_nombre" value="San José" required>
+      </div>
+    </div>
+
+    <div class="toolbar" style="margin-top:16px;">
+      <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar
+      </button>
+
+      <a class="btn btn-ghost" href="{{ url_for('listar_eventos') }}">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+    </div>
+  </form>
+{% endblock %}

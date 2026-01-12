@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Editar Asistencia{% endblock %}
+
+{% block content %}
+  <h1>Editar Asistencia</h1>
+  <p class="page-subtitle">Actualiza el estado de asistencia para la sesión registrada.</p>
+
+  <div class="card">
+    <div class="table-wrap" style="min-width:unset;">
+      <table style="min-width:unset;">
+        <thead>
+          <tr>
+            <th colspan="2"><i class="fa-solid fa-circle-info"></i> Información de la sesión</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width:220px; color:var(--muted); font-weight:900;">Estudiante</td>
+            <td>{{ a.estudiante_nombre }}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted); font-weight:900;">Grupo</td>
+            <td>{{ a.grupo_nombre }}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted); font-weight:900;">Fecha</td>
+            <td>{{ a.fecha_sesion_txt }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <form method="POST" style="margin-top:14px;">
+      <label>Estado</label>
+      <select name="estado" required>
+        <option value="Presente" {% if a.estado == "Presente" %}selected{% endif %}>Presente</option>
+        <option value="Ausente" {% if a.estado == "Ausente" %}selected{% endif %}>Ausente</option>
+        <option value="Tarde" {% if a.estado == "Tarde" %}selected{% endif %}>Tarde</option>
+        <option value="Justificado" {% if a.estado == "Justificado" %}selected{% endif %}>Justificado</option>
+      </select>
+
+      <div class="toolbar" style="margin-top:14px;">
+        <button type="submit" class="btn btn-primary">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
+        </button>
+
+        <a class="btn btn-ghost" href="{{ url_for('listar_asistencias') }}">
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
